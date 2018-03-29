@@ -6,10 +6,12 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +20,7 @@ import com.ctscafe.admin.error.ValidationErrors;
 import com.ctscafe.admin.model.Vendor;
 import com.ctscafe.admin.repository.VendorRepository;
 import com.ctscafe.admin.utilities.JsonResponse;
+import com.ctscafe.admin.utilities.PasswordGenerator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -109,9 +112,37 @@ public class VendorController {
 				obj.setMessage("something went wrong");
 				return obj;
 			}
+			
 			obj.setStatus("success");
 			obj.setMessage(created);
-			return obj;
+			
+			Map<String, String> map1= new HashMap<String, String>();
+			map1.put("recipient", created.getVendorEmail());
+			map1.put("body", "Thanks for signing-up! Please find your login credentials below :\n\n\n"
+					+ "Username : "+ created.getVendorId()  + "\n"
+					+ "Password : " + PasswordGenerator.generatePassword() + "\n\n\n\n\n"
+					+ "This is an auto-generated email. Please do not reply!");
+			map1.put("subject", "Login Credentials");
+			
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_JSON);
+	        
+	       
+	        HttpEntity<Map<String, String>> requestEntity= 
+	                new HttpEntity<Map<String, String>>(map1, headers);
+	        String url1 = "http://mailmicro.cfapps.io/ctscafe/sendMail";
+	        String response = "";
+	        try{
+	            response = restTemplate.postForObject(url1, requestEntity, String.class);
+	            System.out.println(response);
+	        }
+	        catch(Exception e){
+	        	e.printStackTrace();
+	        }
+
 		}
+		return obj;
 	}
+	
+	
 }
