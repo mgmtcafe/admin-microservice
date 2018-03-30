@@ -31,8 +31,8 @@ comment:
   require_changes: no
 
 codecov:
-  token: 2f58347b-2a97-433d-b516-ac5c76b944f2  
-
+  token: 2f58347b-2a97-433d-b516-ac5c76b944f2
+  
 coverage:
   notify:
     slack:
