@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +35,7 @@ public class VendorController {
 		this.vendorRepository = vendorRepository;
 		this.restTemplate = restTemplate;
 	}
-
+	
 	@GetMapping(path = "/vendor/all")
 	public List<Vendor> getLocation() {
 		return vendorRepository.findAll();
@@ -45,7 +46,7 @@ public class VendorController {
 		return vendorRepository.findOne(Integer.parseInt(id));
 	}
 	
-	
+	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
 	@GetMapping(path= "/vendor/location")
 	public Object checkLocation() {
 		String url = "http://locationmicro.cfapps.io/location/getLocationById/1";
@@ -53,7 +54,7 @@ public class VendorController {
 		return message;
 	}
 	
-	
+	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
 	@PostMapping(path = "/vendor/create")
 	public Object createVendor(@RequestBody Map<String, String> map) {
 

@@ -40,7 +40,10 @@ public class ApplicationTest {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
+		
+		String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDIzODcyNzIsInVzZXJfbmFtZSI6ImFkbWluQGFkbWluLmNvbSIsImF1dGhvcml0aWVzIjpbIlZFTkRPUiIsIkFETUlOIl0sImp0aSI6IjY4NGIzYzVlLTg3YjctNDY1Yi1iYzg1LTJmMjY4NDk4MWU1ZCIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsIm9wZW5pZCJdfQ.iha45IpRMX3yZ6Oeza9CORCwPRQwgX0BTVjtgayVkgnXwXXCYnXHwKkLUq0LL88XIKwlGLxc45d6WUJrw2rZMMJpfUmKO4SS7HOXqiiy1P2x7kCaFiYqrpwGGJBa5Ncec7J2vJJVlg4Wo-73bydsM1gr_CDvimDIoNuB7raEAz6YojStPgG7PTQerg-ikgaXwbsgTNmtBQ5lw3rdiSsyr5uSYxlH62bXLqkEYTY61Nm-ZEnD18WR9K0qlK9rZSpoy2akm0h7x7bNm-NCFwIwZCI8CqESSpJt3kAP8_SY7EZRTpH5gD_jE4027pzQlDeIcEiHL18CY6zuMc02x7Sgug";
+		headers.set("Authorization", "Bearer " + token);
+		
 		HttpEntity<Map<String, String>> requestEntity = new HttpEntity<Map<String, String>>(json, headers);
 
 		String url = "/vendor/create";
