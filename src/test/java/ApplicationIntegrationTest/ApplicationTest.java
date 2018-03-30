@@ -60,4 +60,4 @@ public class ApplicationTest {
 		map = (Map<String, Object>) gson.fromJson(response, map.getClass());
 		assertThat(map.get("status")).isEqualTo("success");
 	}
-}
+}*/
