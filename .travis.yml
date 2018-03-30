@@ -11,7 +11,7 @@ notifications:
     on_failure: always # default: always
 
 script:
- - mvn test
+ - mvn test -X
  - mvn cobertura:cobertura
 
 #script: "mvn cobertura:cobertura"
