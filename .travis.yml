@@ -12,7 +12,7 @@ notifications:
 
 script:
  - mvn test -X
- - mvn cobertura:cobertura
+ #- mvn cobertura:cobertura
 
 #script: "mvn cobertura:cobertura"
 
