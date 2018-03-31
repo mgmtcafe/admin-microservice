@@ -9,10 +9,6 @@ import com.ctscafe.admin.AdminApp;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AdminApp.class)
 public class MainClass {
-
-// Test class added ONLY to cover main() invocation not covered by application tests.
-
-
 	@Test
 	public void applicationContextLoaded() {
 	}
