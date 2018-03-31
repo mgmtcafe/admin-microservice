@@ -157,6 +157,12 @@
 						<format>xml</format>
 					</formats>
 					<check />
+					<instrumentation>
+					    <excludes>
+					      <exclude>com/ctscafe/admin/config/*.java</exclude>
+					      <exclude>com/ctscafe/admin/AdminApp.java</exclude>
+					    </excludes>
+					  </instrumentation>
 				</configuration>
 			</plugin>
 
