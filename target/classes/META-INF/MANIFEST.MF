@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: cafeteria-admin
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: 653738
+Built-By: krishanu
 Implementation-Vendor-Id: com.cognizant.admin
-Build-Jdk: 1.8.0_141
+Build-Jdk: 1.8.0_151
 Implementation-URL: http://projects.spring.io/spring-boot/cafeteria-ad
  min/
 Created-By: Maven Integration for Eclipse

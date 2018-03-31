@@ -4,14 +4,12 @@ notifications:
   email:
     recipients:
       - cafemgmt@gmail.com
-      - ronjoybarthakur@gmail.com
-      - sbasu.739@gmail.com
       - krishanu.das2009@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
 
 script:
- - mvn test 
+ - mvn clean install -DskipITs 
  - mvn cobertura:cobertura
 
 #script: "mvn cobertura:cobertura"
