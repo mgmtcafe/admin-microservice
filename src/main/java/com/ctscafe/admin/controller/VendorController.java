@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.ctscafe.admin.error.ValidationErrors;
 import com.ctscafe.admin.model.Vendor;
@@ -28,7 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 @RestController
-@CrossOrigin
 public class VendorController {
 	private final VendorRepository vendorRepository;
 	private RestTemplate restTemplate;
