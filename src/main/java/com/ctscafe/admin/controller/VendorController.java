@@ -143,28 +143,28 @@ public class VendorController {
 			}
 			
 			
-			HttpHeaders headers1 = new HttpHeaders();
-			headers1.setContentType(MediaType.APPLICATION_JSON);
-
-			// create new user
-			headers1.set("Authorization", auth);
-			headers1.setContentType(MediaType.APPLICATION_JSON);
-
-			String url11 = "http://authorizationserver.herokuapp.com/uaa/createUser";
-
-			Map<String, String> usermap = new HashMap<>();
-
-			usermap.put("username", created.getVendorEmail());
-			usermap.put("password", pass);
-			usermap.put("authorities", "VENDOR");
-			System.out.println(pass);
-			HttpEntity<Map<String, String>> requestEntity1 = new HttpEntity<Map<String, String>>(usermap, headers1);
-			try {
-				String response1 = restTemplate.postForObject(url11, requestEntity1, String.class);
-				System.out.println(response1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+//			HttpHeaders headers1 = new HttpHeaders();
+//			headers1.setContentType(MediaType.APPLICATION_JSON);
+//
+//			// create new user
+//			headers1.set("Authorization", auth);
+//			headers1.setContentType(MediaType.APPLICATION_JSON);
+//
+//			String url11 = "http://authorizationserver.herokuapp.com/uaa/createUser";
+//
+//			Map<String, String> usermap = new HashMap<>();
+//
+//			usermap.put("username", created.getVendorEmail());
+//			usermap.put("password", pass);
+//			usermap.put("authorities", "VENDOR");
+//			System.out.println(pass);
+//			HttpEntity<Map<String, String>> requestEntity1 = new HttpEntity<Map<String, String>>(usermap, headers1);
+//			try {
+//				String response1 = restTemplate.postForObject(url11, requestEntity1, String.class);
+//				System.out.println(response1);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 		}
 		return obj;
 	}
