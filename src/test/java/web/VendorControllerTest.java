@@ -56,9 +56,6 @@ public class VendorControllerTest {
 		Mockito.when(
 				restTemplate.getForObject("http://locationmicro.cfapps.io/location/getLocationById/1", String.class))
 				.thenReturn(stringResponse);
-//		Mockito.when(
-//				restTemplate.postForObject(any(), any(),  any()))
-//				.thenReturn("success");
 		
 		Vendor v = new Vendor(1, "test vendor", "test@test.com", "1234567891", "test address", 1);
 		
@@ -86,8 +83,7 @@ public class VendorControllerTest {
 		json.put("location", "1");
 		Gson gson = new Gson();
 		String expected = "{\"status\":\"success\",\"message\":{\"vendorId\":1,\"vendorName\":\"test vendor\",\"vendorEmail\":\"test@test.com\",\"vendorContact\":\"1234567891\",\"vendorAddress\":\"test address\",\"vendorLocationId\":1}}";
-		String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDIzODcyNzIsInVzZXJfbmFtZSI6ImFkbWluQGFkbWluLmNvbSIsImF1dGhvcml0aWVzIjpbIlZFTkRPUiIsIkFETUlOIl0sImp0aSI6IjY4NGIzYzVlLTg3YjctNDY1Yi1iYzg1LTJmMjY4NDk4MWU1ZCIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSIsIm9wZW5pZCJdfQ.iha45IpRMX3yZ6Oeza9CORCwPRQwgX0BTVjtgayVkgnXwXXCYnXHwKkLUq0LL88XIKwlGLxc45d6WUJrw2rZMMJpfUmKO4SS7HOXqiiy1P2x7kCaFiYqrpwGGJBa5Ncec7J2vJJVlg4Wo-73bydsM1gr_CDvimDIoNuB7raEAz6YojStPgG7PTQerg-ikgaXwbsgTNmtBQ5lw3rdiSsyr5uSYxlH62bXLqkEYTY61Nm-ZEnD18WR9K0qlK9rZSpoy2akm0h7x7bNm-NCFwIwZCI8CqESSpJt3kAP8_SY7EZRTpH5gD_jE4027pzQlDeIcEiHL18CY6zuMc02x7Sgug";
-		mockMvc.perform(post("/vendor/create").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(json)).header("Authorization", token))
+		mockMvc.perform(post("/vendor/create").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(json)))
 				.andExpect(MockMvcResultMatchers.content().string(expected)).andDo(print());
 
 	}
