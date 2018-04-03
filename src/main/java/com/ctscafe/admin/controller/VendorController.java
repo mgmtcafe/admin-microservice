@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,7 +36,7 @@ public class VendorController {
 		this.vendorRepository = vendorRepository;
 		this.restTemplate = restTemplate;
 	}
-	
+
 	@GetMapping(path = "/vendor/all")
 	public List<Vendor> getLocation() {
 		return vendorRepository.findAll();
@@ -45,19 +46,20 @@ public class VendorController {
 	public Object getVendorById(@PathVariable("id") String id) {
 		return vendorRepository.findOne(Integer.parseInt(id));
 	}
-	
+
 	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
-	@GetMapping(path= "/vendor/location")
+	@GetMapping(path = "/vendor/location")
 	public Object checkLocation() {
 		String url = "http://locationmicro.cfapps.io/location/getLocationById/1";
 		String message = restTemplate.getForObject(url, String.class);
 		return message;
 	}
 	
+
 	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
 	@PostMapping(path = "/vendor/create")
-	public Object createVendor(@RequestBody Map<String, String> map) {
-
+	public Object createVendor(@RequestBody Map<String, String> map, @RequestHeader("Authorization") String auth) {
+		System.out.println(auth);
 		Vendor vendor = null;
 		JsonResponse obj = new JsonResponse();
 		try {
@@ -113,37 +115,58 @@ public class VendorController {
 				obj.setMessage("something went wrong");
 				return obj;
 			}
-			
+
 			obj.setStatus("success");
 			obj.setMessage(created);
 			
-			Map<String, String> map1= new HashMap<String, String>();
-			map1.put("recipient", created.getVendorEmail());
-			map1.put("body", "Thanks for signing-up! Please find your login credentials below :\n\n\n"
-					+ "Username : "+ created.getVendorId()  + "\n"
-					+ "Password : " + PasswordGenerator.generatePassword() + "\n\n\n\n\n"
-					+ "This is an auto-generated email. Please do not reply!");
-			map1.put("subject", "Login Credentials");
+			final String pass = PasswordGenerator.generatePassword();
 			
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.APPLICATION_JSON);
-	        
-	       
-	        HttpEntity<Map<String, String>> requestEntity= 
-	                new HttpEntity<Map<String, String>>(map1, headers);
-	        String url1 = "http://mailmicro.cfapps.io/ctscafe/sendMail";
-	        String response = "";
-	        try{
-	            response = restTemplate.postForObject(url1, requestEntity, String.class);
-	            System.out.println(response);
-	        }
-	        catch(Exception e){
-	        	e.printStackTrace();
-	        }
+			Map<String, String> map1 = new HashMap<String, String>();
+			map1.put("recipient", created.getVendorEmail());
+			map1.put("body",
+					"Thanks for signing-up! Please find your login credentials below :\n\n\n" + "Username : "
+							+ created.getVendorEmail() + "\n" + "Password : " + pass + "\n\n\n\n\n"
+							+ "This is an auto-generated email. Please do not reply!");
+			map1.put("subject", "Login Credentials");
+			System.out.println(map1.get("body"));
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
 
+			HttpEntity<Map<String, String>> requestEntity = new HttpEntity<Map<String, String>>(map1, headers);
+			String url1 = "http://mailmicro.cfapps.io/ctscafe/sendMail";
+			String response = "";
+			try {
+				response = restTemplate.postForObject(url1, requestEntity, String.class);
+				System.out.println(response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			HttpHeaders headers1 = new HttpHeaders();
+			headers1.setContentType(MediaType.APPLICATION_JSON);
+
+			// create new user
+			headers1.set("Authorization", auth);
+			headers1.setContentType(MediaType.APPLICATION_JSON);
+
+			String url11 = "http://authorizationserver.herokuapp.com/uaa/createUser";
+
+			Map<String, String> usermap = new HashMap<>();
+
+			usermap.put("username", created.getVendorEmail());
+			usermap.put("password", pass);
+			usermap.put("authorities", "VENDOR");
+			System.out.println(usermap.get("password"));
+			HttpEntity<Map<String, String>> requestEntity1 = new HttpEntity<Map<String, String>>(usermap, headers1);
+			try {
+				String response1 = restTemplate.postForObject(url11, requestEntity1, String.class);
+				System.out.println(response1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return obj;
 	}
-	
-	
+
 }
