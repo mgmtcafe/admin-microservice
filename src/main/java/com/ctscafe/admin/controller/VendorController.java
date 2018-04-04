@@ -42,13 +42,13 @@ public class VendorController {
 		return vendorRepository.findAll();
 	}
 
-	@GetMapping(path = "/vendor/getById/{id}", headers = "Accept=*")
+	@GetMapping(path = "/vendor/getById/{id}")
 	public Object getVendorById(@PathVariable("id") String id) {
 		return vendorRepository.findOne(Integer.parseInt(id));
 	}
 
 	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
-	@GetMapping(path = "/vendor/location", headers = "Accept=*")
+	@GetMapping(path = "/vendor/location")
 	public Object checkLocation() {
 		String url = "http://locationmicro.cfapps.io/location/getLocationById/1";
 		String message = restTemplate.getForObject(url, String.class);
@@ -57,7 +57,7 @@ public class VendorController {
 	
 
 	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
-	@PostMapping(path = "/vendor/create", headers = "Accept=*")
+	@PostMapping(path = "/vendor/create")
 	public Object createVendor(@RequestBody Map<String, String> map, @RequestHeader("Authorization") String auth) {
 		System.out.println(auth);
 		Vendor vendor = null;
