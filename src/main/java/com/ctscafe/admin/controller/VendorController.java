@@ -56,7 +56,7 @@ public class VendorController {
 	}
 	
 	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
-	@RequestMapping("/user/me")
+	@GetMapping("/user/me")
 	public Principal user(Principal user) {
 		return user;
 	}
