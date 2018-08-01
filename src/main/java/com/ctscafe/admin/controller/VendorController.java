@@ -3,7 +3,7 @@ package com.ctscafe.admin.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.security.Principal;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -55,7 +55,12 @@ public class VendorController {
 		return message;
 	}
 	
-
+	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
+	@RequestMapping("/user/me")
+	public Principal user(Principal user) {
+		return user;
+	}
+	
 	@PreAuthorize("#oauth2.hasScope('openid') and hasAuthority('ADMIN')")
 	@PostMapping(path = "/vendor/create")
 	public Object createVendor(@RequestBody Map<String, String> map, @RequestHeader("Authorization") String auth) {
